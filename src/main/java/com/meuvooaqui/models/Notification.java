@@ -59,5 +59,13 @@ public class Notification {
         this.user = user;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", message='" + message + '\'' +
+                ", timestamp=" + timestamp +
+                ", user=" + user.getUsername() +
+                '}';
+    }
 }

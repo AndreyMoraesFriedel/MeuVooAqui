@@ -48,4 +48,13 @@ public class Preference {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Preference{" +
+                "id=" + id +
+                ", airportCode='" + airportCode + '\'' +
+                ", user=" + user.getUsername() +
+                '}';
+    }
 }

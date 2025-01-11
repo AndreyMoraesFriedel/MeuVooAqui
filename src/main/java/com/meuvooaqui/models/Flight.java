@@ -74,4 +74,17 @@ public class Flight {
     public void setScheduleArrival(String scheduleArrival) {
         this.scheduleArrival = scheduleArrival;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", flightNumber='" + flightNumber + '\'' +
+                ", origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", status='" + status + '\'' +
+                ", scheduleDeparture=" + scheduleDeparture + 
+                ", scheduleArrival=" + scheduleArrival +
+                '}';
+    }
 }

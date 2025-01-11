@@ -68,4 +68,14 @@ public class User {
     public void setPreferences(List<Preference> preferences) {
         this.preferences = preferences;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
