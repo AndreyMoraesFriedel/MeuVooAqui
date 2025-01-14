@@ -3,28 +3,26 @@ package com.meuvooaqui.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = Notification.NAME_TABLE)
 public class Notification {
-    public static final String NAME_TABLE = "notification";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String message;
+
     private String timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "user_flight_id", nullable = false)
+    private UserFlight userFlight;
 
-    public Notification() {
-    }
+    public Notification() {}
 
-    public Notification(String message, String timestamp, User user) {
+    public Notification(String message, String timestamp, UserFlight userFlight) {
         this.message = message;
         this.timestamp = timestamp;
-        this.user = user;
+        this.userFlight = userFlight;
     }
 
     public Long getId() {
@@ -51,21 +49,17 @@ public class Notification {
         this.timestamp = timestamp;
     }
 
-    public User getUser() {
-        return user;
+    public UserFlight getUserFlight() {
+        return userFlight;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserFlight(UserFlight userFlight) {
+        this.userFlight = userFlight;
     }
 
     @Override
     public String toString() {
-        return "Notification{" +
-                "id=" + id +
-                ", message='" + message + '\'' +
-                ", timestamp=" + timestamp +
-                ", user=" + user.getUsername() +
-                '}';
+        return "Notification [id=" + id + ", message=" + message + ", timestamp=" + timestamp + ", userFlight="
+                + userFlight + "]";
     }
 }
