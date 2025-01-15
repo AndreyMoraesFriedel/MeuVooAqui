@@ -1,5 +1,7 @@
 package com.meuvooaqui.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +13,7 @@ public class Notification {
 
     private String message;
 
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     @ManyToOne
     @JoinColumn(name = "user_flight_id", nullable = false)
@@ -19,7 +21,7 @@ public class Notification {
 
     public Notification() {}
 
-    public Notification(String message, String timestamp, UserFlight userFlight) {
+    public Notification(String message, LocalDateTime timestamp, UserFlight userFlight) {
         this.message = message;
         this.timestamp = timestamp;
         this.userFlight = userFlight;
@@ -41,11 +43,11 @@ public class Notification {
         this.message = message;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -1,5 +1,7 @@
 package com.meuvooaqui.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,14 +18,14 @@ public class Flight {
     private String destination;
     private String status;
 
-    private String scheduleDeparture;
-    private String scheduleArrival;
+    private LocalDateTime scheduleDeparture;
+    private LocalDateTime scheduleArrival;
 
     public Flight() {
     }
 
-    public Flight(String flightNumber, String origin, String destination, String status, String scheduleDeparture,
-            String scheduleArrival) {
+    public Flight(String flightNumber, String origin, String destination, String status, LocalDateTime scheduleDeparture,
+    LocalDateTime scheduleArrival) {
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
@@ -62,16 +64,20 @@ public class Flight {
     public void setStatus(String status) {
         this.status = status;
     }
-    public String getScheduleDeparture() {
+
+    public LocalDateTime getScheduleDeparture() {
         return scheduleDeparture;
     }
-    public void setScheduleDeparture(String scheduleDeparture) {
+
+    public void setScheduleDeparture(LocalDateTime scheduleDeparture) {
         this.scheduleDeparture = scheduleDeparture;
     }
-    public String getScheduleArrival() {
+
+    public LocalDateTime getScheduleArrival() {
         return scheduleArrival;
     }
-    public void setScheduleArrival(String scheduleArrival) {
+
+    public void setScheduleArrival(LocalDateTime scheduleArrival) {
         this.scheduleArrival = scheduleArrival;
     }
 
