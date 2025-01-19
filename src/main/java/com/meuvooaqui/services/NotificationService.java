@@ -6,31 +6,42 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meuvooaqui.models.Notification;
-import com.meuvooaqui.models.UserFlight;
+import com.meuvooaqui.Domain.DTOs.NotificationDTO;
+import com.meuvooaqui.Domain.models.Notification;
+import com.meuvooaqui.Domain.models.UserFlight;
 import com.meuvooaqui.repositories.NotificationRepository;
+import com.meuvooaqui.repositories.UserFlightRepository;
 
 @Service
 public class NotificationService {
     private final NotificationRepository notificationRepository;
+    private final UserFlightRepository userFlightRepository;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository,
+            UserFlightRepository userFlightRepository) {
         this.notificationRepository = notificationRepository;
+        this.userFlightRepository = userFlightRepository;
     }
 
     @Transactional
-    public Notification addFlightNotification(String message, LocalDateTime timestamp, UserFlight userFlight){
+    public NotificationDTO addFlightNotification(String message, LocalDateTime timestamp, Long userFlightId) {
+        UserFlight userFlight = userFlightRepository.findById(userFlightId)
+                            .orElseThrow(() -> new RuntimeException("UserFlight Not Found"));
         Notification notification = new Notification(message, timestamp, userFlight);
-        return notificationRepository.save(notification);
+        notification = notificationRepository.save(notification);
+        return new NotificationDTO(notification);
     }
 
     @Transactional
-    public List<Notification> getNotificationsByUser(Long userId) {
-        return notificationRepository.findByUserFlight_UserId(userId);
+    public List<NotificationDTO> getNotificationsByUser(Long userId) {
+        List<Notification> notifications = notificationRepository.findByUserFlight_UserId(userId);
+        return notifications.stream()
+                .map(NotificationDTO::new)
+                .toList();
     }
 
     @Transactional
-    public void deleteNotification(Long id){
+    public void deleteNotification(Long id) {
         notificationRepository.deleteById(id);
     }
 }

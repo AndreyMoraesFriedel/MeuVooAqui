@@ -1,4 +1,4 @@
-package com.meuvooaqui.models;
+package com.meuvooaqui.Domain.models;
 
 import jakarta.persistence.*;
 

@@ -6,13 +6,16 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meuvooaqui.models.Preference;
-import com.meuvooaqui.models.User;
+import com.meuvooaqui.Domain.DTOs.PreferenceDTO;
+import com.meuvooaqui.Domain.DTOs.UserDTO;
+import com.meuvooaqui.Domain.models.Preference;
+import com.meuvooaqui.Domain.models.User;
 import com.meuvooaqui.repositories.PreferenceRepository;
 import com.meuvooaqui.repositories.UserRepository;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PreferenceRepository preferenceRepository;
 
@@ -22,31 +25,48 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(String username, String email, String password){
+    public UserDTO addUser(String username, String email, String password) {
         User user = new User(username, email, password);
-        return userRepository.save(user);
-    }
-    
-    @Transactional
-    public Optional<User> findUserById(Long id){
-        return userRepository.findById(id);
+        userRepository.save(user);
+        return new UserDTO(user);
     }
 
     @Transactional
-    public User updateUser(User user){
-        return userRepository.save(user);
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserDTO::new)
+                .toList();
     }
 
     @Transactional
-    public Preference addPreferenceToUser(Long id, String airportCode){
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public Optional<UserDTO> findUserById(Long id) {
+        return userRepository.findById(id).map(UserDTO::new);
+    }
+
+    @Transactional
+    public UserDTO updateUserPassword(Long id, String password) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        user.setPassword(password);
+        userRepository.save(user);
+        return new UserDTO(user);
+    }
+
+    @Transactional
+    public PreferenceDTO addPreferenceToUser(Long id, String airportCode) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         Preference preference = new Preference(airportCode, user);
-        return preferenceRepository.save(preference);
+        preferenceRepository.save(preference);
+        PreferenceDTO preferenceDTO = new PreferenceDTO(preference);
+        return preferenceDTO;
     }
 
     @Transactional
-    public List<Preference> getPreferencesByUser(Long userId) {
-        return preferenceRepository.findByUserId(userId);
+    public List<PreferenceDTO> getPreferencesByUser(Long userId) {
+        List<Preference> preferences = preferenceRepository.findByUserId(userId);
+        return preferences.stream().map(p -> new PreferenceDTO(p)).toList();
     }
 
     @Transactional

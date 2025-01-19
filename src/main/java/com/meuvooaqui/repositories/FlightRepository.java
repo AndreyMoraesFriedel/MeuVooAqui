@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.meuvooaqui.models.Flight;
+import com.meuvooaqui.Domain.models.Flight;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {

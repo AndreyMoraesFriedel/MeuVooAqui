@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.meuvooaqui.models.Preference;
+import com.meuvooaqui.Domain.models.Preference;
 
 @Repository
 public interface PreferenceRepository extends JpaRepository<Preference, Long>{

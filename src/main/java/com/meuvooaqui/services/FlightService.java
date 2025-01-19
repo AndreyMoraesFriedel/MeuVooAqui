@@ -1,13 +1,13 @@
 package com.meuvooaqui.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meuvooaqui.models.Flight;
+import com.meuvooaqui.Domain.DTOs.FlightDTO;
+import com.meuvooaqui.Domain.models.Flight;
 import com.meuvooaqui.repositories.FlightRepository;
 
 @Service
@@ -19,26 +19,48 @@ public class FlightService {
     }
 
     @Transactional
-    public Flight addFlight(String flightNumber, String origin, String destination, String status, LocalDateTime scheduleDeparture,
-    LocalDateTime scheduleArrival){
-        Flight flight = new Flight(flightNumber, origin, destination, status, scheduleDeparture, scheduleArrival);
-        return flightRepository.save(flight);
+    public FlightDTO addFlight(FlightDTO flightDTO) {
+        Flight flight = new Flight(
+            flightDTO.getFlightNumber(),
+            flightDTO.getOrigin(),
+            flightDTO.getDestination(),
+            flightDTO.getStatus(),
+            flightDTO.getScheduleDeparture(),
+            flightDTO.getScheduleArrival()
+        );
+        flightRepository.save(flight);
+        return new FlightDTO(flight);
     }
 
     @Transactional
-    public Flight updateFlightStatus(Long fligthId, String status){
-        Flight flight = flightRepository.findById(fligthId).orElseThrow(() -> new RuntimeException("Flight Not Found"));
+    public List<FlightDTO> getAllFlights() {
+        List<Flight> flights = flightRepository.findAll();
+        return flights.stream()
+                    .map(FlightDTO::new)
+                    .toList();
+    }
+
+    @Transactional
+    public FlightDTO updateFlightStatus(Long flightId, String status) {
+        Flight flight = flightRepository.findById(flightId)
+                            .orElseThrow(() -> new RuntimeException("Flight Not Found"));
         flight.setStatus(status);
-        return flightRepository.save(flight);
+        flightRepository.save(flight);
+        return new FlightDTO(flight);
     }
 
     @Transactional
-    public List<Flight> findFlightsByAirport(String airportCode){
-        return flightRepository.findByAirportCode(airportCode);
+    public List<FlightDTO> findFlightsByAirport(String airportCode) {
+        List<Flight> flights = flightRepository.findByAirportCode(airportCode);
+        return flights.stream()
+                    .map(FlightDTO::new)
+                    .toList();
     }
 
     @Transactional
-    public Optional<Flight> findFlightById(Long flightId){
-        return flightRepository.findById(flightId);
+    public Optional<FlightDTO> findFlightById(Long flightId) {
+        return flightRepository.findById(flightId)
+                .map(FlightDTO::new); 
     }
 }
+
